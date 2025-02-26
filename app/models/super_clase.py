@@ -1,7 +1,7 @@
 from app import mongo
 
 class SuperClass:
-    def _init_(self,collection):
+    def __init__(self,collection):
         self.collection = mongo.db[collection] 
 
 
@@ -28,6 +28,7 @@ class SuperClass:
         },{
             "$set":data
         })
+        print(dict(datum))
         return datum
     
     

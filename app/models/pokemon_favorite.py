@@ -3,8 +3,8 @@ from app.models.super_clase import SuperClass
 from bson import ObjectId
 
 class PokemonFavorites(SuperClass):
-    def _init_(self):
-        super()._init_("pokemon_favorites")
+    def __init__(self):
+        super().__init__("pokemon_favorites")
         
     def update(self, object_id,data):
         raise NotImplementedError("Los pokemones no se pueden actualizar")

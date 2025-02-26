@@ -2,8 +2,8 @@ from app import mongo
 from app.models.super_clase import SuperClass
 
 class Pokemon(SuperClass): 
-    def _init_(self):
-        super()._init_("pokemons")
+    def __init__(self):
+        super().__init__("pokemons")
 
     def create(self, data):
         raise NotImplementedError("Los pokemones no se pueden crear")

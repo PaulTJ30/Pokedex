@@ -3,3 +3,5 @@ Flask-Pymongo
 flask-cors
 python-dotenv
 marshmallow
+flask-jwt-extended
+bcrypt
