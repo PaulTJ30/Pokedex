@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from app.schemas.user_schema import UserSchema
 from marshmallow import ValidationError
-from app.models.factory import ModelFactory
+from app.models.factory import ModelFactory 
 from bson import ObjectId
 from app.tools.response_manager import ResponseManager
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
@@ -15,19 +15,26 @@ EM = EncryptionManager()
 
 @bp.route("/login", methods=["POST"])
 def login():
-    data = request.json
-    email = data.get("email", None)
-    password = data.get("password", None)
-    if not email or not password:
-        return RM.error("Correo o contraseña vaci@")
-    user = user_model.get_by_email_password(email,password)
-    if not user:
-        return RM.error("No se encontro un usuario")
-    if not EM.compare_hashes(password, user["password"]):
-        return RM.error("Credenciales invalidas")
-    return RM.success({"user":user, "token":create_access_token(user["_id"])})
+    try:
+        data = request.get_json()  
+        print("Data recived:",  data)
+        email = data.get("email", None)
+        password = data.get("password", None)
 
+        if not email or not password:
+            return RM.error("Correo o contraseña vací@") 
 
+        user = user_model.get_by_email_password(email, password)
+        print("User found:", user)
+        if not user:
+            return RM.error("No se encontró un usuario")
+    
+        if not EM.compare_hashes(password, user.get("password", "")):  
+            return RM.error("Credenciales inválidas")
+
+        return RM.success({"user": user, "token": create_access_token(user["_id"])})
+    except:
+        return RM.error_server("Se producjo un error")
 
 @bp.route("/register", methods=["POST"])
 def register():
@@ -38,7 +45,8 @@ def register():
         return RM.success({"user_id ": str(user_id),"token":create_access_token(str(user_id))})
     except ValidationError as err:
         return RM.error("los parametros enviados son incorrectos")
-    
+
+
 @bp.route("/update", methods=["PUT"])
 @jwt_required()
 def update():

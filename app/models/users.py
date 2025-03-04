@@ -13,4 +13,3 @@ class User(SuperClass):
       user["_id"] = str(user["_id"])
       return user
    
-   
