@@ -24,7 +24,7 @@ def login():
         if not email or not password:
             return RM.error("Correo o contraseña vací@") 
 
-        user = user_model.get_by_email_password(email, password)
+        user = user_model.get_by_email(email)
         print("User found:", user)
         if not user:
             return RM.error("No se encontró un usuario")
@@ -70,4 +70,6 @@ def delete():
 def get_user():
     user_id = get_jwt_identity()
     user = user_model.find_by_id(ObjectId(user_id))
+    if not user:
+        return RM.error("Usuario no encontrado")
     return RM.success(user)

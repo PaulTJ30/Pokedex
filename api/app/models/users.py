@@ -8,8 +8,9 @@ class User(SuperClass):
    def find_all(self):
       raise NotImplementedError("No es necesario obtener todos los usuarios")
 
-   def get_by_email_password(self, email, password):
-      user = self.collection.find_one({"email": email, "password": password})
-      user["_id"] = str(user["_id"])
+   def get_by_email(self, email):
+      user = self.collection.find_one({"email": email})
+      if user:
+         user["_id"] = str(user["_id"])
       return user
    
